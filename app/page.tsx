@@ -11,7 +11,7 @@ export default function Home() {
         <Navbar />
         <main>
           <Header />
-          <div className="mt-10 flex flex-wrap px-36 py-3">
+          <div className="mx-auto mt-10 flex w-[90%] flex-wrap justify-center gap-4 px-2 py-3">
             <Link href="/restaurant/russian-vodka-room">
               <RestaurantCard />
             </Link>
