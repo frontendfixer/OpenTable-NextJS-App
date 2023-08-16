@@ -1,8 +1,8 @@
 const ReservationCard = () => {
   return (
-    <div className="rounded bg-white p-3 shadow-lg">
+    <div className="rounded bg-white p-3 ">
       <div className="border-b pb-2 text-center font-bold">
-        <h4 className="mr-7 text-lg">Make a Reservation</h4>
+        <h4 className="mr-7 text-xl">Make a Reservation</h4>
       </div>
       <div className="my-3 flex flex-col gap-1">
         <label htmlFor="">Party size</label>
