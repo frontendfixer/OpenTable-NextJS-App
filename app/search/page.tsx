@@ -1,6 +1,11 @@
 import Header from './_components/Header'
 import SearchSideBar from './_components/SearchSideBar'
 import RestaurantCard from './_components/RestaurantCard'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Search - Open Table Restaurant',
+}
 
 const Search = () => {
   return (

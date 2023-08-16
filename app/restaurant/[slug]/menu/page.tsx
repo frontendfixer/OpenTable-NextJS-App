@@ -1,4 +1,10 @@
+import { Metadata } from 'next'
 import MenuCard from './_components/MenuCard'
+
+export const metadata: Metadata = {
+  title: 'Menu  of Milesstone Grill | Open Table Reservation',
+  description: 'Menu of Milesstone Grill Restaurant',
+}
 
 const RestaurantMenu = () => {
   return (

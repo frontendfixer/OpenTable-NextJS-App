@@ -1,11 +1,15 @@
-import Header from './_components/Header'
-import RestaurantNavbar from './_components/RestaurantNavbar'
 import Title from './_components/Title'
 import Rating from './_components/Rating'
 import Description from './_components/Description'
 import FoodImages from './_components/FoodImages'
 import Review from './_components/Review'
 import ReservationCard from './_components/ReservationCard'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Milesstone Grill | Open Table Reservation',
+  description: 'Milesstone Grill Restaurant',
+}
 
 const RestaurantDetails = () => {
   return (
