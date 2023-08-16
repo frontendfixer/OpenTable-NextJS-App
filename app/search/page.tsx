@@ -9,9 +9,11 @@ const Search = () => {
       <main className="m-auto max-w-screen-2xl bg-white">
         <Navbar />
         <Header />
-        <div className="m-auto flex w-2/3 items-start justify-between py-4">
-          <SearchSideBar />
-          <div className="w-5/6">
+        <div className="m-auto flex w-4/5 items-start justify-between py-4">
+          <div className="w-1/5">
+            <SearchSideBar />
+          </div>
+          <div className="ml-6 w-4/5">
             <RestaurantCard />
           </div>
         </div>
