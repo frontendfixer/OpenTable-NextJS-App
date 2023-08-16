@@ -1,5 +1,4 @@
-import Navbar from '@/components/Navbar'
-import Link from 'next/link'
+import Navbar from '@/app/_components/Navbar'
 import Header from './_components/Header'
 import RestaurantNavbar from './_components/RestaurantNavbar'
 import Title from './_components/Title'
@@ -15,16 +14,18 @@ const RestaurantDetails = () => {
       <main className="m-auto max-w-screen-2xl bg-white">
         <Navbar />
         <Header />
-        <div className="0 m-auto -mt-11 flex w-2/3 items-start justify-between">
-          <div className="w-[70%] rounded bg-white p-3 shadow">
+        <div className="mx-auto -mt-11 flex w-[90%] flex-col items-start justify-between gap-6 md:flex-row">
+          <div className="w-full rounded bg-white p-3  shadow md:w-[70%] md:shadow-lg">
             <RestaurantNavbar />
-            <Title />
-            <Rating />
-            <Description />
-            <FoodImages />
-            <Review />
+            <div className="px-4">
+              <Title />
+              <Rating />
+              <Description />
+              <FoodImages />
+              <Review />
+            </div>
           </div>
-          <div className="relative w-[27%] text-reg">
+          <div className="relative mx-auto w-full text-reg md:w-[27%]">
             <ReservationCard />
           </div>
         </div>
