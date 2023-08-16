@@ -1,7 +1,7 @@
-import Navbar from '@/components/Navbar'
 import Header from './_components/Header'
 import SearchSideBar from './_components/SearchSideBar'
 import RestaurantCard from './_components/RestaurantCard'
+import Navbar from '../_components/Navbar'
 
 const Search = () => {
   return (

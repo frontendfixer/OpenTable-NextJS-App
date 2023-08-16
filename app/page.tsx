@@ -1,6 +1,6 @@
-import Header from '@/components/Header'
-import Navbar from '@/components/Navbar'
-import RestaurantCard from '@/components/RestaurantCard'
+import Header from '@/app/_components/Header'
+import Navbar from '@/app/_components/Navbar'
+import RestaurantCard from '@/app/_components/RestaurantCard'
 
 import Link from 'next/link'
 
