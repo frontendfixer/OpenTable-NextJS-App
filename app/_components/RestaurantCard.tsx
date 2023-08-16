@@ -1,37 +1,51 @@
 import Image from 'next/image'
-import resPic from '@/assets/41710620.webp'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { RestaurantCardType } from '../page'
+import Link from 'next/link'
+import PriceTag from './PriceTag'
 
-const RestaurantCard = () => {
+type Props = {
+  restaurant: RestaurantCardType
+}
+
+const RestaurantCard = ({ restaurant }: Props) => {
+  const { main_image, name, cuisine, location, price, slug } = restaurant
+
   return (
-    <div className="max-w-[256px] cursor-pointer overflow-hidden rounded-lg border-2 transition duration-200 hover:-translate-y-1 hover:shadow-lg">
-      <Image
-        src={resPic}
-        alt=""
-        style={{
-          width: '256px',
-          height: '128px',
-          objectFit: 'cover',
-        }}
-      />
-      <div className="p-2">
-        <h3 className="mb-2 text-2xl font-medium">Russian Vodka Room</h3>
-        <div className="item-start flex items-center">
-          <div className="mb-2 flex">*****</div>
-          <p className="ml-2 text-sm">77 reviews</p>
+    <Link href={`restaurant/${slug}`}>
+      <div className="max-w-[256px] cursor-pointer overflow-hidden rounded-lg border-2 transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+        <Image
+          src={main_image}
+          alt=""
+          width={256}
+          height={128}
+          style={{
+            width: '256px',
+            height: '128px',
+            objectFit: 'cover',
+          }}
+        />
+        <div className="p-2">
+          <h3 className="mb-2 text-2xl font-medium">{name}</h3>
+          <div className="item-start flex items-center">
+            <div className="mb-2 flex">*****</div>
+            <p className="ml-2 text-sm">77 reviews</p>
+          </div>
+          <div className="flex items-center gap-2 text-reg font-light capitalize">
+            <p>{cuisine.name}</p>
+            <span className="h-1 w-1 rounded-full bg-black" />
+            <p>{<PriceTag price={price} />}</p>
+            <span className="h-1 w-1 rounded-full bg-black" />
+            <p>{location.name}</p>
+          </div>
+          <p className="mt-1 flex items-center text-sm font-bold">
+            <FontAwesomeIcon icon={faShareFromSquare} className="mr-1 w-5" />
+            Booked 3 times today
+          </p>
         </div>
-        <div className="flex text-reg font-light capitalize">
-          <p className="mr-3 ">Russian</p>
-          <p className="mr-3">$$$$$</p>
-          <p>Kive</p>
-        </div>
-        <p className="mt-1 flex items-center text-sm font-bold">
-          <FontAwesomeIcon icon={faShareFromSquare} className="mr-1 w-5" />
-          Booked 3 times today
-        </p>
       </div>
-    </div>
+    </Link>
   )
 }
 
