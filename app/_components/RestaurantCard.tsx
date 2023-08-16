@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import resPic from '../assets/41710620.webp'
+import resPic from '@/assets/41710620.webp'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
 
