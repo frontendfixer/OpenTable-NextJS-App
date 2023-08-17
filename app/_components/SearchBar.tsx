@@ -19,6 +19,7 @@ const SearchBar = () => {
           type="text"
           className="w-80 rounded border-none p-2 pl-10 text-lg outline-none md:w-96"
           placeholder="City, Town, or Restaurant"
+          value={location}
           onChange={(e) => setLocation(() => e.target.value)}
         />
       </div>
