@@ -19,18 +19,35 @@ export type RestaurantByCityType = {
   location: Location
 }
 
+type SearchParams = { city?: string; cuisine?: string; price?: PRICE }
+
 const prisma = new PrismaClient()
 export const fetchRestaurantByCity = async (
-  city: string,
+  searchParams: SearchParams,
 ): Promise<RestaurantByCityType[]> => {
+  const where: any = {}
+
+  if (searchParams.city) {
+    const location = {
+      name: searchParams.city.toLocaleLowerCase(),
+    }
+    where.location = location
+  }
+
+  if (searchParams.cuisine) {
+    const cuisine = {
+      name: searchParams.cuisine.toLocaleLowerCase(),
+    }
+    where.cuisine = cuisine
+  }
+
+  if (searchParams.price) {
+    const price = searchParams.price
+    where.price = price
+  }
+
   const restaurant = await prisma.restaurant.findMany({
-    where: {
-      location: {
-        name: {
-          equals: city,
-        },
-      },
-    },
+    where,
     select: {
       id: true,
       name: true,
@@ -55,13 +72,8 @@ const fetchCuisine = async (): Promise<Cuisine[]> => {
   return cuisines
 }
 
-const Search = async ({
-  searchParams,
-}: {
-  searchParams: { city?: string; cuisine?: string; price?: PRICE }
-}) => {
-  const city = searchParams.city?.toLocaleLowerCase()!
-  const restaurants = await fetchRestaurantByCity(city)
+const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const restaurants = await fetchRestaurantByCity(searchParams)
   const locations = await fetchLocations()
   const cuisines = await fetchCuisine()
   return (
@@ -78,11 +90,13 @@ const Search = async ({
         <div className="ml-6 w-4/5">
           {restaurants.length === 0 ? (
             <h2 className="text-3xl font-semibold">
-              We have no restaurant at {city}
+              We have no restaurant at {searchParams.city}
             </h2>
           ) : (
             <>
-              <h2 className="text-2xl">Showing restaurant in {city}</h2>
+              <h2 className="text-2xl">
+                Showing restaurant in {searchParams.city}
+              </h2>
               {restaurants.map((restaurant) => (
                 <RestaurantCard restaurant={restaurant} key={restaurant.id} />
               ))}
