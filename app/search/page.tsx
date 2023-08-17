@@ -66,9 +66,12 @@ const Search = async ({
               We have no restaurant at {city}
             </h2>
           ) : (
-            restaurants.map((restaurant) => (
-              <RestaurantCard restaurant={restaurant} key={restaurant.id} />
-            ))
+            <>
+              <h2 className="text-2xl">Showing restaurant in {city}</h2>
+              {restaurants.map((restaurant) => (
+                <RestaurantCard restaurant={restaurant} key={restaurant.id} />
+              ))}
+            </>
           )}
         </div>
       </div>
