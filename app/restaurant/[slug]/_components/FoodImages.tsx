@@ -1,33 +1,20 @@
-const FoodImages = () => {
+import Image from 'next/image'
+
+const FoodImages = ({ images }: { images: string[] }) => {
   return (
     <div>
       <h1 className="mb-7 mt-10 border-b pb-5 text-3xl font-bold">5 photos</h1>
-      <div className="flex flex-wrap">
-        <img
-          className="mb-1 mr-1 h-44 w-56"
-          src="https://resizer.otstatic.com/v2/photos/xlarge/3/41701449.jpg"
-          alt=""
-        />
-        <img
-          className="mb-1 mr-1 h-44 w-56"
-          src="https://resizer.otstatic.com/v2/photos/xlarge/2/41701450.jpg"
-          alt=""
-        />
-        <img
-          className="mb-1 mr-1 h-44 w-56"
-          src="https://resizer.otstatic.com/v2/photos/xlarge/2/41701452.jpg"
-          alt=""
-        />
-        <img
-          className="mb-1 mr-1 h-44 w-56"
-          src="https://resizer.otstatic.com/v2/photos/xlarge/2/41701453.jpg"
-          alt=""
-        />
-        <img
-          className="mb-1 mr-1 h-44 w-56"
-          src="https://resizer.otstatic.com/v2/photos/xlarge/2/41701454.jpg"
-          alt=""
-        />
+      <div className="grid grid-flow-row grid-cols-1 justify-center gap-2 md:grid-cols-2 xl:grid-cols-3">
+        {images.map((image) => (
+          <div className="relative h-80 w-full md:h-60" key={image}>
+            <Image
+              src={image}
+              alt={image}
+              fill
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   )

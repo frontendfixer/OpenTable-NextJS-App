@@ -5,20 +5,56 @@ import FoodImages from './_components/FoodImages'
 import Review from './_components/Review'
 import ReservationCard from './_components/ReservationCard'
 import { Metadata } from 'next'
+import { Item, PrismaClient } from '@prisma/client'
 
 export const metadata: Metadata = {
   title: 'Milesstone Grill | Open Table Reservation',
   description: 'Milesstone Grill Restaurant',
 }
 
-const RestaurantDetails = () => {
+const prisma = new PrismaClient()
+
+type RestaurantType = {
+  id: number
+  name: string
+  main_image: string
+  images: string[]
+  description: string
+  Item: Item[]
+}
+
+export const fetchRestaurantBySlug = async (
+  slug: string,
+): Promise<RestaurantType> => {
+  const restaurant = await prisma.restaurant.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      images: true,
+      main_image: true,
+      Item: true,
+    },
+  })
+  if (!restaurant) throw new Error()
+  return restaurant
+}
+
+const RestaurantDetails = async ({ params }: { params: { slug: string } }) => {
+  const restaurant = await fetchRestaurantBySlug(params.slug)
+
+  const { name, description, images } = restaurant
+
   return (
     <div className="flex flex-col items-start justify-between gap-6 md:flex-row">
       <div className="w-full px-4 md:w-2/3">
-        <Title />
+        <Title title={name} />
         <Rating />
-        <Description />
-        <FoodImages />
+        <Description description={description} />
+        <FoodImages images={images} />
         <Review />
       </div>
       <div className="relative mx-auto w-full text-reg md:w-[30%]">

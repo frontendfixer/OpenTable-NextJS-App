@@ -1,15 +1,12 @@
 import Link from 'next/link'
 
-const RestaurantNavbar = () => {
+const RestaurantNavbar = ({ slug }: { slug: string }) => {
   return (
     <nav className="flex border-b pb-2 text-reg">
-      <Link href="/restaurant/milestone-grill" className="mr-7 font-medium">
+      <Link href={`/restaurant/${slug}`} className="mr-7 font-medium">
         Overview
       </Link>
-      <Link
-        href="/restaurant/milestone-grill/menu"
-        className="mr-7 font-medium"
-      >
+      <Link href={`/restaurant/${slug}/menu`} className="mr-7 font-medium">
         Menu
       </Link>
     </nav>
