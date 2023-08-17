@@ -25,18 +25,16 @@ const RestaurantMenu = async ({ params }: { params: { slug: string } }) => {
   const menuItems = await fetchItemsMenu(params.slug)
 
   return (
-    <main className="mt-5 bg-white">
-      <div>
-        <div className="mb-1 mt-4 pb-1">
-          <h2 className="text-4xl font-bold">Menu</h2>
-        </div>
-        <div className="flex flex-wrap justify-between">
-          {menuItems.map((menuItem) => (
-            <MenuCard key={menuItem.id} menuItem={menuItem} />
-          ))}
-        </div>
+    <div className="mt-5 bg-white">
+      <div className="mb-1 mt-4 pb-1">
+        <h2 className="text-4xl font-bold">Menu</h2>
       </div>
-    </main>
+      <div className="grid w-full grid-flow-row grid-cols-1 gap-2 md:w-2/3 md:grid-cols-3">
+        {menuItems.map((menuItem) => (
+          <MenuCard key={menuItem.id} menuItem={menuItem} />
+        ))}
+      </div>
+    </div>
   )
 }
 
