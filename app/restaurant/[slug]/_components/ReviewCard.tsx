@@ -1,3 +1,4 @@
+import Starts from '@/app/_components/Stars'
 import { Review } from '@prisma/client'
 
 const ReviewCard = ({ review }: { review: Review }) => {
@@ -15,7 +16,9 @@ const ReviewCard = ({ review }: { review: Review }) => {
       </div>
       <div className="ml-10 w-5/6">
         <div className="flex items-center">
-          <div className="mr-5 flex">*****</div>
+          <div className="mb-2 mr-5 flex">
+            {<Starts rating={rating} reviews={[]} />}
+          </div>
         </div>
         <div className="mt-5">
           <p className="text-lg font-light">{text}</p>

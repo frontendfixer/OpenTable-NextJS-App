@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { RestaurantByCityType } from '../page'
 import PriceTag from '@/app/_components/PriceTag'
 import { calcReviewAverage } from '@/utils/CalculateReviewAverage'
+import Starts from '@/app/_components/Stars'
 
 const RestaurantCard = ({
   restaurant,
@@ -45,7 +46,7 @@ const RestaurantCard = ({
           {description}
         </p>
         <div className="mt-3 flex items-start gap-2">
-          <div className="flex">*****</div>
+          <div className="mb-2 flex">{<Starts reviews={Review} />}</div>
           <p className="text-sm">{renderRatingText()}</p>
         </div>
 
