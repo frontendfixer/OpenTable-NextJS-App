@@ -6,6 +6,7 @@ import ReviewSection from './_components/Review'
 import ReservationCard from './_components/ReservationCard'
 import { Metadata } from 'next'
 import { Item, PrismaClient, Review } from '@prisma/client'
+import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Milesstone Grill | Open Table Reservation',
@@ -41,7 +42,7 @@ export const fetchRestaurantBySlug = async (
       Review: true,
     },
   })
-  if (!restaurant) throw new Error()
+  if (!restaurant) notFound()
   return restaurant
 }
 
