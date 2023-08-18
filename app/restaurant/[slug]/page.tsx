@@ -2,10 +2,10 @@ import Title from './_components/Title'
 import Rating from './_components/Rating'
 import Description from './_components/Description'
 import FoodImages from './_components/FoodImages'
-import Review from './_components/Review'
+import ReviewSection from './_components/Review'
 import ReservationCard from './_components/ReservationCard'
 import { Metadata } from 'next'
-import { Item, PrismaClient } from '@prisma/client'
+import { Item, PrismaClient, Review } from '@prisma/client'
 
 export const metadata: Metadata = {
   title: 'Milesstone Grill | Open Table Reservation',
@@ -21,6 +21,7 @@ type RestaurantType = {
   images: string[]
   description: string
   Item: Item[]
+  Review: Review[]
 }
 
 export const fetchRestaurantBySlug = async (
@@ -37,6 +38,7 @@ export const fetchRestaurantBySlug = async (
       images: true,
       main_image: true,
       Item: true,
+      Review: true,
     },
   })
   if (!restaurant) throw new Error()
@@ -46,16 +48,16 @@ export const fetchRestaurantBySlug = async (
 const RestaurantDetails = async ({ params }: { params: { slug: string } }) => {
   const restaurant = await fetchRestaurantBySlug(params.slug)
 
-  const { name, description, images } = restaurant
+  const { name, description, images, Review } = restaurant
 
   return (
     <div className="flex flex-col items-start justify-between gap-6 md:flex-row">
       <div className="w-full px-4 md:w-2/3">
         <Title title={name} />
-        <Rating />
+        <Rating reviews={restaurant.Review} />
         <Description description={description} />
         <FoodImages images={images} />
-        <Review />
+        <ReviewSection reviews={restaurant.Review} />
       </div>
       <div className="relative mx-auto w-full text-reg md:w-[30%]">
         <ReservationCard />

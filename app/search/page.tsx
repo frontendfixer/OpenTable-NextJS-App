@@ -2,7 +2,7 @@ import Header from './_components/Header'
 import SearchSideBar from './_components/SearchSideBar'
 import RestaurantCard from './_components/RestaurantCard'
 import { Metadata } from 'next'
-import { Cuisine, Location, PRICE, PrismaClient } from '@prisma/client'
+import { Cuisine, Location, PRICE, PrismaClient, Review } from '@prisma/client'
 
 export const metadata: Metadata = {
   title: 'Search - Open Table Restaurant',
@@ -17,6 +17,7 @@ export type RestaurantByCityType = {
   price: PRICE
   cuisine: Cuisine
   location: Location
+  Review: Review[]
 }
 
 type SearchParams = { city?: string; cuisine?: string; price?: PRICE }
@@ -57,6 +58,7 @@ export const fetchRestaurantByCity = async (
       price: true,
       cuisine: true,
       location: true,
+      Review: true,
     },
   })
   if (!restaurant) throw new Error()
