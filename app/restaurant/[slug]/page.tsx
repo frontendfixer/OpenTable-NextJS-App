@@ -54,10 +54,10 @@ const RestaurantDetails = async ({ params }: { params: { slug: string } }) => {
     <div className="flex flex-col items-start justify-between gap-6 md:flex-row">
       <div className="w-full px-4 md:w-2/3">
         <Title title={name} />
-        <Rating reviews={restaurant.Review} />
+        <Rating reviews={Review} />
         <Description description={description} />
         <FoodImages images={images} />
-        <ReviewSection reviews={restaurant.Review} />
+        {Review.length === 0 ? '' : <ReviewSection reviews={Review} />}
       </div>
       <div className="relative mx-auto w-full text-reg md:w-[30%]">
         <ReservationCard />
