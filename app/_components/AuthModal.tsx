@@ -2,9 +2,10 @@
 
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import AuthModalInputs from './AuthModalInputs'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -21,6 +22,22 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  const handelChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const [inputs, setInputs] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    city: '',
+    password: '',
+  })
 
   const renderContent = (signInContent: string, signUpContent: string) =>
     isSignIn ? signInContent : signUpContent
@@ -64,6 +81,14 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
                   'Create Your OpenTable Account',
                 )}
               </h2>
+              <AuthModalInputs
+                isSignIn={isSignIn}
+                inputs={inputs}
+                handelChangeInput={handelChangeInput}
+              />
+              <button className="w-full rounded bg-red-600 p-3 text-sm uppercase text-white disabled:bg-gray-400">
+                {renderContent('Sign In', 'Create Account')}
+              </button>
             </div>
           </div>
         </Box>
