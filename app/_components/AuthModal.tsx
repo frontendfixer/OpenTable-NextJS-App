@@ -8,7 +8,7 @@ import { faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import AuthModalInputs from './AuthModalInputs'
 import useAuth from '@/hooks/useAuth'
 import { AuthenticationContext } from '../context/AuthContext'
-import { CircularProgress } from '@mui/material'
+import { Alert, CircularProgress } from '@mui/material'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -121,6 +121,11 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
                 inputs={inputs}
                 handelChangeInput={handelChangeInput}
               />
+              {error && (
+                <Alert severity="error" className="mb-2">
+                  {error}
+                </Alert>
+              )}
               <button
                 className="grid w-full place-content-center rounded bg-red-600 p-3 text-sm uppercase text-white disabled:bg-gray-400"
                 disabled={disabled}
