@@ -1,6 +1,7 @@
 import RestaurantCard from './_components/RestaurantCard'
 import { Metadata } from 'next'
 import { Cuisine, Location, PRICE, PrismaClient, Review } from '@prisma/client'
+import SearchSideBar from './_components/SearchSideBar'
 
 export const metadata: Metadata = {
   title: 'Search - Open Table Restaurant',
@@ -21,7 +22,7 @@ export type RestaurantByCityType = {
 type SearchParams = { city?: string; cuisine?: string; price?: PRICE }
 
 const prisma = new PrismaClient()
-export const fetchRestaurantByCity = async (
+const fetchRestaurantByCity = async (
   searchParams: SearchParams,
 ): Promise<RestaurantByCityType[]> => {
   const where: any = {}
@@ -62,26 +63,45 @@ export const fetchRestaurantByCity = async (
   if (!restaurant) throw new Error()
   return restaurant
 }
+const fetchLocations = async (): Promise<Location[]> => {
+  const locations = await prisma.location.findMany()
+  return locations
+}
+const fetchCuisine = async (): Promise<Cuisine[]> => {
+  const cuisines = await prisma.cuisine.findMany()
+  return cuisines
+}
 
 const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
   const restaurants = await fetchRestaurantByCity(searchParams)
+  const locations = await fetchLocations()
+  const cuisines = await fetchCuisine()
   return (
-    <div className="ml-6 w-4/5">
-      {restaurants.length === 0 ? (
-        <h2 className="text-3xl font-semibold">
-          We have no restaurant at {searchParams.city}
-        </h2>
-      ) : (
-        <>
-          <h2 className="text-2xl">
-            Showing restaurant in {searchParams.city}
+    <>
+      <div className="w-1/5">
+        <SearchSideBar
+          locations={locations}
+          cuisines={cuisines}
+          searchParams={searchParams}
+        />
+      </div>
+      <div className="ml-6 w-4/5">
+        {restaurants.length === 0 ? (
+          <h2 className="text-3xl font-semibold">
+            We have no restaurant at {searchParams.city}
           </h2>
-          {restaurants.map((restaurant) => (
-            <RestaurantCard restaurant={restaurant} key={restaurant.id} />
-          ))}
-        </>
-      )}
-    </div>
+        ) : (
+          <>
+            <h2 className="text-2xl">
+              Showing restaurant in {searchParams.city}
+            </h2>
+            {restaurants.map((restaurant) => (
+              <RestaurantCard restaurant={restaurant} key={restaurant.id} />
+            ))}
+          </>
+        )}
+      </div>
+    </>
   )
 }
 
