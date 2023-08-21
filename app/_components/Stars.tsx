@@ -4,6 +4,7 @@ import emptyStar from '@/assets/icons/empty-star.png'
 import Image from 'next/image'
 import { Review } from '@prisma/client'
 import { calcReviewAverage } from '@/utils/CalculateReviewAverage'
+import { v4 as uuidv4 } from 'uuid'
 
 const Starts = ({
   reviews,
@@ -34,7 +35,7 @@ const Starts = ({
         height={14}
         alt=""
         aria-hidden
-        key={star.src}
+        key={uuidv4()}
       />
     ))
   }

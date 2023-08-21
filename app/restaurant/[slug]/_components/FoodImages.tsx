@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { v4 as uuidv4 } from 'uuid'
 
 const FoodImages = ({ images }: { images: string[] }) => {
   return (
@@ -6,7 +7,7 @@ const FoodImages = ({ images }: { images: string[] }) => {
       <h1 className="mb-7 mt-10 border-b pb-5 text-3xl font-bold">5 photos</h1>
       <div className="grid grid-flow-row grid-cols-1 justify-center gap-2 md:grid-cols-2 xl:grid-cols-3">
         {images.map((image) => (
-          <div className="relative h-80 w-full md:h-60" key={image}>
+          <div className="relative h-80 w-full md:h-60" key={uuidv4()}>
             <Image
               src={image}
               alt={image}
