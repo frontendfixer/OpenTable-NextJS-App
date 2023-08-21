@@ -2,10 +2,13 @@
 
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import AuthModalInputs from './AuthModalInputs'
+import useAuth from '@/hooks/useAuth'
+import { AuthenticationContext } from '../context/AuthContext'
+import { CircularProgress } from '@mui/material'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -22,6 +25,9 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  const { signIn } = useAuth()
+  const { data, error, loading } = useContext(AuthenticationContext)
 
   const handelChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputs({
@@ -64,6 +70,12 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
 
   const renderContent = (signInContent: string, signUpContent: string) =>
     isSignIn ? signInContent : signUpContent
+
+  const handelSubmit = () => {
+    if (isSignIn) {
+      return signIn({ email: inputs.email, password: inputs.password })
+    }
+  }
 
   return (
     <div>
@@ -110,10 +122,15 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
                 handelChangeInput={handelChangeInput}
               />
               <button
-                className="w-full rounded bg-red-600 p-3 text-sm uppercase text-white disabled:bg-gray-400"
+                className="grid w-full place-content-center rounded bg-red-600 p-3 text-sm uppercase text-white disabled:bg-gray-400"
                 disabled={disabled}
+                onClick={handelSubmit}
               >
-                {renderContent('Sign In', 'Create Account')}
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : (
+                  renderContent('Sign In', 'Create Account')
+                )}
               </button>
             </div>
           </div>
