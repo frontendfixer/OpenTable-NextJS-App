@@ -29,11 +29,17 @@ const RestaurantMenu = async ({ params }: { params: { slug: string } }) => {
       <div className="mb-1 mt-4 pb-1">
         <h2 className="text-4xl font-bold">Menu</h2>
       </div>
-      <div className="grid w-full grid-flow-row grid-cols-1 gap-2 md:w-2/3 md:grid-cols-3">
-        {menuItems.map((menuItem) => (
-          <MenuCard key={menuItem.id} menuItem={menuItem} />
-        ))}
-      </div>
+      {menuItems.length === 0 ? (
+        <h2 className="font-xl font-medium">
+          This restaurant doesn&apos;t provide any menu for internet.
+        </h2>
+      ) : (
+        <div className="grid w-full grid-flow-row grid-cols-1 gap-2 md:w-2/3 md:grid-cols-3">
+          {menuItems.map((menuItem) => (
+            <MenuCard key={menuItem.id} menuItem={menuItem} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
