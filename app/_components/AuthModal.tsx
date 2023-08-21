@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import AuthModalInputs from './AuthModalInputs'
@@ -38,6 +38,29 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
     city: '',
     password: '',
   })
+
+  const [disabled, setDisable] = useState(true)
+
+  useEffect(() => {
+    if (isSignIn) {
+      if (inputs.email && inputs.password) {
+        return setDisable(false)
+      }
+    } else {
+      if (
+        inputs.firstName &&
+        inputs.lastName &&
+        inputs.email &&
+        inputs.password &&
+        inputs.city &&
+        inputs.phone
+      ) {
+        return setDisable(false)
+      }
+    }
+
+    return setDisable(true)
+  }, [inputs, isSignIn])
 
   const renderContent = (signInContent: string, signUpContent: string) =>
     isSignIn ? signInContent : signUpContent
@@ -86,7 +109,10 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
                 inputs={inputs}
                 handelChangeInput={handelChangeInput}
               />
-              <button className="w-full rounded bg-red-600 p-3 text-sm uppercase text-white disabled:bg-gray-400">
+              <button
+                className="w-full rounded bg-red-600 p-3 text-sm uppercase text-white disabled:bg-gray-400"
+                disabled={disabled}
+              >
                 {renderContent('Sign In', 'Create Account')}
               </button>
             </div>
