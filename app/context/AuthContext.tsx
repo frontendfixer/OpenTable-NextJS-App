@@ -60,14 +60,12 @@ export default function AuthContext({ children }: { children: ReactNode }) {
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
 
-      console.log(response.data)
       return setAuthState({
         data: response.data,
         error: null,
         loading: false,
       })
     } catch (error: any) {
-      console.log(error)
       setAuthState({
         data: null,
         error: error.response.data.errorMessage,
