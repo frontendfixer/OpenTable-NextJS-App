@@ -14,6 +14,7 @@ export default async function handler(
   const payload = jwt.decode(token) as { email: string }
   if (!payload.email)
     res.status(401).json({ errorMessage: 'Unauthorized request' })
+
   const user = await prisma.user.findUnique({
     where: {
       email: payload.email,
@@ -28,7 +29,16 @@ export default async function handler(
     },
   })
 
+  if (!user) {
+    return res.status(401).json({ errorMessage: 'User not found' })
+  }
+
   return res.json({
-    user,
+    id: user.id,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    email: user.email,
+    phone: user.phone,
+    city: user.city,
   })
 }
