@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import * as jose from 'jose'
+import { setCookie } from 'cookies-next'
 
 const prisma = new PrismaClient()
 
@@ -19,11 +20,11 @@ export default async function handler(
 
     const validationSchema = [
       {
-        valid: validator.isLength(firstName, { min: 4, max: 20 }),
+        valid: validator.isLength(firstName, { min: 1, max: 20 }),
         errorMessage: 'First name is invalid',
       },
       {
-        valid: validator.isLength(lastName, { min: 4, max: 20 }),
+        valid: validator.isLength(lastName, { min: 1, max: 20 }),
         errorMessage: 'Last name is invalid',
       },
       {
@@ -35,7 +36,7 @@ export default async function handler(
         errorMessage: 'Phone number is invalid',
       },
       {
-        valid: validator.isLength(city, { min: 4, max: 12 }),
+        valid: validator.isLength(city, { min: 1, max: 12 }),
         errorMessage: 'City is invalid',
       },
       {
@@ -84,13 +85,17 @@ export default async function handler(
       .setProtectedHeader({ alg })
       .setExpirationTime('24h')
       .sign(secret)
+    setCookie('jwt', token, { req, res, maxAge: 60 * 24 })
 
     return res.status(200).json({
-      user,
-      token,
-    })
-    return res.status(404).json({
-      message: 'Unknown endpoint hit',
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      phone: user.phone,
+      city: user.city,
     })
   }
+  return res.status(404).json({
+    message: 'Unknown endpoint hit',
+  })
 }
