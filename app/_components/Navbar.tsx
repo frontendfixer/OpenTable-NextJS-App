@@ -3,15 +3,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import AuthModal from './AuthModal'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AuthenticationContext } from '../context/AuthContext'
 import useAuth from '@/hooks/useAuth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faUserAlt } from '@fortawesome/free-solid-svg-icons'
+import { CircularProgress } from '@mui/material'
+import UserCard from './UserCard'
 
 const Navbar = () => {
+  const [isUserCardOpen, setIsUserCardOpen] = useState(false)
+
   const { loading, data } = useContext(AuthenticationContext)
-  const { signOut } = useAuth()
+
   return (
     <nav className="flex items-center justify-between bg-white px-4 py-2">
       <Link
@@ -28,26 +32,29 @@ const Navbar = () => {
         />
         OpenTable
       </Link>
-      <>
-        {loading ? null : (
-          <div className="flex gap-4">
+      <div className="flex gap-4">
+        {loading ? (
+          <CircularProgress color="primary" size={27} />
+        ) : (
+          <>
             {data ? (
-              <button
-                className="flex items-center gap-1 rounded-md border bg-red-500 px-4 py-2 text-white transition hover:opacity-80"
-                onClick={signOut}
-              >
-                <FontAwesomeIcon icon={faRightFromBracket} className="w-4" />
-                <span className="hidden font-medium md:block">Sign in</span>
-              </button>
+              <>
+                <FontAwesomeIcon
+                  icon={faUserAlt}
+                  className="h-6 w-6 rounded-full bg-red-600 p-1 text-white"
+                  onClick={() => setIsUserCardOpen(!isUserCardOpen)}
+                />
+                {isUserCardOpen ? <UserCard /> : ''}
+              </>
             ) : (
               <>
                 <AuthModal isSignIn={true} />
                 <AuthModal isSignIn={false} />
               </>
             )}
-          </div>
+          </>
         )}
-      </>
+      </div>
     </nav>
   )
 }
