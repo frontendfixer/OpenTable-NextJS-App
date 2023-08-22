@@ -73,7 +73,10 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
 
   const handelSubmit = () => {
     if (isSignIn) {
-      return signIn({ email: inputs.email, password: inputs.password })
+      return signIn(
+        { email: inputs.email, password: inputs.password },
+        handleClose,
+      )
     }
   }
 
