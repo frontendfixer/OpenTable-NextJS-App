@@ -1,5 +1,6 @@
 import { AuthenticationContext } from '@/app/context/AuthContext'
 import axios from 'axios'
+import { deleteCookie } from 'cookies-next'
 import { useContext } from 'react'
 
 const useAuth = () => {
@@ -15,8 +16,12 @@ const useAuth = () => {
     },
     handleClose: () => void,
   ) => {
+    setAuthState({
+      data: null,
+      error: null,
+      loading: true,
+    })
     try {
-      setAuthState({ data: null, error: null, loading: true })
       const response = await axios.post(
         'http://localhost:3000/api/auth/signin',
         {
@@ -24,11 +29,15 @@ const useAuth = () => {
           password,
         },
       )
-      setAuthState({ data: response.data, error: null, loading: false })
+      setAuthState({
+        data: response.data,
+        error: null,
+        loading: false,
+      })
       handleClose()
     } catch (error: any) {
       console.log(error)
-      setAuthState({
+      return setAuthState({
         data: null,
         error: error.response.data.errorMessage,
         loading: false,
@@ -54,8 +63,12 @@ const useAuth = () => {
     },
     handleClose: () => void,
   ) => {
+    setAuthState({
+      data: null,
+      error: null,
+      loading: true,
+    })
     try {
-      setAuthState({ data: null, error: null, loading: true })
       const response = await axios.post(
         'http://localhost:3000/api/auth/signup',
         {
@@ -67,11 +80,15 @@ const useAuth = () => {
           phone,
         },
       )
-      setAuthState({ data: response.data, error: null, loading: false })
+      setAuthState({
+        data: response.data,
+        error: null,
+        loading: false,
+      })
       handleClose()
     } catch (error: any) {
       console.log(error)
-      setAuthState({
+      return setAuthState({
         data: null,
         error: error.response.data.errorMessage,
         loading: false,
@@ -79,7 +96,16 @@ const useAuth = () => {
     }
   }
 
-  return { signIn, signUp }
+  const signOut = () => {
+    deleteCookie('jwt')
+    setAuthState({
+      data: null,
+      error: null,
+      loading: false,
+    })
+  }
+
+  return { signIn, signUp, signOut }
 }
 
 export default useAuth
