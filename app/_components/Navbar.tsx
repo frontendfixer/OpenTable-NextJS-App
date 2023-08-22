@@ -17,7 +17,7 @@ const Navbar = () => {
   const { loading, data } = useContext(AuthenticationContext)
 
   return (
-    <nav className="flex items-center justify-between bg-white px-4 py-2">
+    <nav className="relative flex items-center justify-between bg-white px-4 py-2">
       <Link
         href="/"
         className="item-center flex gap-1 py-2 pr-2 text-xl font-bold text-gray-700 transition-colors duration-200 hover:text-red-700"
