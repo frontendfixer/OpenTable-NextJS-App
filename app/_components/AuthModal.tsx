@@ -26,7 +26,7 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { signIn } = useAuth()
+  const { signIn, signUp } = useAuth()
   const { data, error, loading } = useContext(AuthenticationContext)
 
   const handelChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +77,8 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
         { email: inputs.email, password: inputs.password },
         handleClose,
       )
+    } else {
+      return signUp(inputs, handleClose)
     }
   }
 
