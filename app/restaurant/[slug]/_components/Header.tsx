@@ -1,8 +1,10 @@
 const Header = ({ title, image }: { title: string; image: string }) => {
-  const renderTitle = () => {
-    const place = title.split('-').pop()
-    const newTitle = title.split('-').slice(0, 2).join(' ')
-    return `${newTitle} (${place})`
+  const renderTitle = (str: string) => {
+    const strArr = str.split('-')
+    const newArr = strArr.map(
+      (el) => el.charAt(0).toUpperCase() + el.slice(1, el.length),
+    )
+    return `${newArr.slice(0, newArr.length - 1).join(' ')} (${newArr.pop()})`
   }
 
   return (
@@ -15,7 +17,7 @@ const Header = ({ title, image }: { title: string; image: string }) => {
       }}
     >
       <h1 className="w-full bg-black/60 text-center text-5xl font-bold capitalize text-white drop-shadow-xl md:text-7xl">
-        {renderTitle()}
+        {renderTitle(title)}
       </h1>
     </div>
   )
