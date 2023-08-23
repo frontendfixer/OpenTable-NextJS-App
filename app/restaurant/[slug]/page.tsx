@@ -29,6 +29,8 @@ type RestaurantType = {
   description: string
   Item: Item[]
   Review: Review[]
+  open_time: string
+  close_time: string
 }
 
 export const fetchRestaurantBySlug = async (
@@ -46,6 +48,8 @@ export const fetchRestaurantBySlug = async (
       main_image: true,
       Item: true,
       Review: true,
+      open_time: true,
+      close_time: true,
     },
   })
   if (!restaurant) notFound()
@@ -67,7 +71,10 @@ const RestaurantDetails = async ({ params }: { params: { slug: string } }) => {
         {Review.length === 0 ? '' : <ReviewSection reviews={Review} />}
       </div>
       <div className="relative mx-auto w-full text-reg md:w-[30%]">
-        <ReservationCard />
+        <ReservationCard
+          openTime={restaurant.open_time}
+          closeTime={restaurant.close_time}
+        />
       </div>
     </div>
   )

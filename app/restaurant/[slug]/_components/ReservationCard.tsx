@@ -1,12 +1,36 @@
 'use client'
 
-import { partySize } from '@/data/'
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
+import { partySize, times } from '@/data/'
 import 'react-datepicker/dist/react-datepicker.css'
 
-const ReservationCard = () => {
+const ReservationCard = ({
+  openTime,
+  closeTime,
+}: {
+  openTime: string
+  closeTime: string
+}) => {
   const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const filterTimeByRestaurantOpenWindow = () => {
+    const timesWithinWindow: typeof times = []
+    let isWithinWindow = false
+
+    times.forEach((time) => {
+      if (time.time === openTime) {
+        return (isWithinWindow = true)
+      }
+      if (isWithinWindow) {
+        return timesWithinWindow.push(time)
+      }
+      if (time.time === closeTime) {
+        return (isWithinWindow = false)
+      }
+    })
+    return timesWithinWindow
+  }
 
   return (
     <div className="rounded bg-white p-3 ">
@@ -44,8 +68,11 @@ const ReservationCard = () => {
             id=""
             className="rounded border-b bg-slate-200 px-2 py-3 font-light"
           >
-            <option value="">7:30 AM</option>
-            <option value="">9:30 AM</option>
+            {filterTimeByRestaurantOpenWindow().map((time) => (
+              <option value={time.time} key={time.time}>
+                {time.displayTime}
+              </option>
+            ))}
           </select>
         </div>
       </div>
