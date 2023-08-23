@@ -6,14 +6,7 @@ import ReviewSection from './_components/Review'
 import ReservationCard from './_components/ReservationCard'
 import { Item, PrismaClient, Review } from '@prisma/client'
 import { notFound } from 'next/navigation'
-
-const generateFormattedTitle = (str: string) => {
-  const strArr = str.split('-')
-  const newArr = strArr.map(
-    (el) => el.charAt(0).toUpperCase() + el.slice(1, el.length),
-  )
-  return `${newArr.slice(0, newArr.length - 1).join(' ')} (${newArr.pop()})`
-}
+import generateFormattedTitle from '@/utils/GeneratedFormattedTitle'
 
 export async function generateMetadata({
   params,
