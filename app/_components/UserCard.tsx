@@ -10,7 +10,7 @@ const UserCard = () => {
   const { data } = useContext(AuthenticationContext)
   const { signOut } = useAuth()
   return (
-    <div className="absolute right-4 top-16 flex flex-col items-center gap-2 rounded bg-slate-100 px-4 py-4 shadow-lg">
+    <div className="absolute right-4 top-16 z-10 flex flex-col items-center gap-2 rounded bg-slate-100 px-4 py-4 shadow-lg">
       <FontAwesomeIcon
         icon={faUser}
         className="h-10 w-10 rounded-full bg-red-400 p-3 text-white"
