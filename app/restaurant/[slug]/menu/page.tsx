@@ -1,11 +1,5 @@
-import { Metadata } from 'next'
 import MenuCard from './_components/MenuCard'
 import { Item, PrismaClient } from '@prisma/client'
-
-export const metadata: Metadata = {
-  title: 'Menu  of Milesstone Grill | Open Table Reservation',
-  description: 'Menu of Milesstone Grill Restaurant',
-}
 
 const prisma = new PrismaClient()
 const fetchItemsMenu = async (slug: string): Promise<Item[]> => {

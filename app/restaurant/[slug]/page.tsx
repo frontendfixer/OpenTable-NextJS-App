@@ -4,13 +4,26 @@ import Description from './_components/Description'
 import FoodImages from './_components/FoodImages'
 import ReviewSection from './_components/Review'
 import ReservationCard from './_components/ReservationCard'
-import { Metadata } from 'next'
 import { Item, PrismaClient, Review } from '@prisma/client'
 import { notFound } from 'next/navigation'
 
-export const metadata: Metadata = {
-  title: 'Milesstone Grill | Open Table Reservation',
-  description: 'Milesstone Grill Restaurant',
+const generateFormattedTitle = (str: string) => {
+  const strArr = str.split('-')
+  const newArr = strArr.map(
+    (el) => el.charAt(0).toUpperCase() + el.slice(1, el.length),
+  )
+  return `${newArr.slice(0, newArr.length - 1).join(' ')} (${newArr.pop()})`
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}) {
+  return {
+    title: `${generateFormattedTitle(params.slug)} | OpenTable Restaurant`,
+    description: `${generateFormattedTitle(params.slug)} Restaurant`,
+  }
 }
 
 const prisma = new PrismaClient()
