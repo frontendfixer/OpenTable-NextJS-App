@@ -5,6 +5,9 @@ import DatePicker from 'react-datepicker'
 import { partySize as partySizeArray, times } from '@/data/'
 import 'react-datepicker/dist/react-datepicker.css'
 import useAvailability from '@/hooks/useAvailability'
+import { CircularProgress } from '@mui/material'
+import Link from 'next/link'
+import { Time, convertToDisplayTime } from '@/utils/convertToDisplayTime'
 
 const ReservationCard = ({
   openTime,
@@ -105,12 +108,41 @@ const ReservationCard = ({
       </div>
       <div className="mt-5 pb-2">
         <button
-          className="w-full rounded bg-red-600 p-4 font-bold text-white"
+          className="flex w-full items-center justify-center rounded bg-red-600 p-4 font-bold text-white hover:opacity-80"
           onClick={handelClick}
+          disabled={loading}
         >
-          Find a Time
+          {loading ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            'Find a Table'
+          )}
         </button>
       </div>
+      {data && data.length ? (
+        <div className="mt-4">
+          <p className="text-reg font-bold">Select a Time</p>
+          <div className="mt-2 flex flex-wrap">
+            {data.map((d) => {
+              return d.available ? (
+                <Link
+                  href={`/reserve/${slug}?date=${day}T${d.time}&partySize=${partySize}`}
+                  className="mb-3 mr-3 w-24 cursor-pointer rounded bg-red-600 p-2 text-center text-white hover:opacity-80"
+                  key={d.time}
+                >
+                  <p className="text-sm font-bold">
+                    {convertToDisplayTime(d.time as Time)}
+                  </p>
+                </Link>
+              ) : (
+                <p className="mb-3 mr-3 w-24 rounded bg-gray-300 p-2">
+                  No slot available
+                </p>
+              )
+            })}
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }
