@@ -2,17 +2,24 @@
 
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
-import { partySize, times } from '@/data/'
+import { partySize as partySizeArray, times } from '@/data/'
 import 'react-datepicker/dist/react-datepicker.css'
+import useAvailability from '@/hooks/useAvailability'
 
 const ReservationCard = ({
   openTime,
   closeTime,
+  slug,
 }: {
   openTime: string
   closeTime: string
+  slug: string
 }) => {
+  const { data, loading, error, fetchAvailability } = useAvailability()
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [time, setTime] = useState(openTime)
+  const [partySize, setPartySize] = useState('2')
+  const [day, setDay] = useState(new Date().toISOString().split('T')[0])
 
   const filterTimeByRestaurantOpenWindow = () => {
     const timesWithinWindow: typeof times = []
@@ -32,6 +39,22 @@ const ReservationCard = ({
     return timesWithinWindow
   }
 
+  const handelChangeDate = (date: Date | null) => {
+    if (!date) return
+    const day = date.toISOString().split('T')[0]
+    setDay(day)
+    return setSelectedDate(date)
+  }
+
+  const handelClick = () => {
+    fetchAvailability({
+      slug,
+      day,
+      time,
+      partySize,
+    })
+  }
+
   return (
     <div className="rounded bg-white p-3 ">
       <div className="border-b pb-2 text-center font-bold">
@@ -43,8 +66,10 @@ const ReservationCard = ({
           name=""
           className="rounded border-b bg-slate-200 px-2 py-3 font-light"
           id=""
+          value={partySize}
+          onChange={(e) => setPartySize(e.target.value)}
         >
-          {partySize.map((size) => (
+          {partySizeArray.map((size) => (
             <option value={size.value} key={size.value}>
               {size.label}
             </option>
@@ -57,7 +82,7 @@ const ReservationCard = ({
           <DatePicker
             selected={selectedDate}
             dateFormat="MMMM dd"
-            onChange={(date: Date) => setSelectedDate(date)}
+            onChange={handelChangeDate}
             className="w-full rounded border-b border-none bg-slate-200 px-2 py-3 font-light"
           />
         </div>
@@ -67,6 +92,8 @@ const ReservationCard = ({
             name=""
             id=""
             className="rounded border-b bg-slate-200 px-2 py-3 font-light"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
           >
             {filterTimeByRestaurantOpenWindow().map((time) => (
               <option value={time.time} key={time.time}>
@@ -77,7 +104,10 @@ const ReservationCard = ({
         </div>
       </div>
       <div className="mt-5 pb-2">
-        <button className="w-full rounded bg-red-600 p-4 font-bold text-white">
+        <button
+          className="w-full rounded bg-red-600 p-4 font-bold text-white"
+          onClick={handelClick}
+        >
           Find a Time
         </button>
       </div>
