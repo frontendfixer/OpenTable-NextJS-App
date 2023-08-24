@@ -63,6 +63,8 @@ export default async function handler(
     },
     select: {
       tables: true,
+      open_time: true,
+      close_time: true,
     },
   })
   if (!restaurant) {
@@ -92,17 +94,27 @@ export default async function handler(
     })
   })
 
-  const availabilities = searchTimesWithTables.map((t) => {
-    const sumOfSeats = t.tables.reduce((sum, table) => {
-      return sum + table.seats
-    }, 0)
+  const availabilities = searchTimesWithTables
+    .map((t) => {
+      const sumOfSeats = t.tables.reduce((sum, table) => {
+        return sum + table.seats
+      }, 0)
 
-    return {
-      time: t.time,
-      seats: sumOfSeats,
-      available: sumOfSeats >= parseInt(partySize),
-    }
-  })
+      return {
+        time: t.time,
+        seats: sumOfSeats,
+        available: sumOfSeats >= parseInt(partySize),
+      }
+    })
+    .filter((availability) => {
+      const timeIsAfterOpeningHour =
+        new Date(`${day}T${availability.time}`) >=
+        new Date(`${day}T${restaurant.open_time}`)
+      const timeIsBeforeClosingHour =
+        new Date(`${day}T${availability.time}`) <=
+        new Date(`${day}T${restaurant.close_time}`)
+      return timeIsAfterOpeningHour && timeIsBeforeClosingHour
+    })
 
   return res.json({
     searchTimes,
