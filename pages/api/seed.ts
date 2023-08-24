@@ -4,20 +4,20 @@ import { PRICE, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 type Data = {
-  name: string
+  upload_status: string
 }
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
-  //   await prisma.table.deleteMany();
-  await prisma.review.deleteMany()
-  await prisma.item.deleteMany()
   await prisma.restaurant.deleteMany()
+  await prisma.item.deleteMany()
   await prisma.location.deleteMany()
   await prisma.cuisine.deleteMany()
   await prisma.user.deleteMany()
+  await prisma.review.deleteMany()
+  await prisma.table.deleteMany()
 
   await prisma.location.createMany({
     data: [{ name: 'ottawa' }, { name: 'toronto' }, { name: 'niagara' }],
@@ -1304,22 +1304,206 @@ export default async function handler(
     ],
   })
 
-  //   await prisma.table.createMany({
-  //     data: [
-  //       {
-  //         restaurant_id: vivaanId,
-  //         seats: 4,
-  //       },
-  //       {
-  //         restaurant_id: vivaanId,
-  //         seats: 4,
-  //       },
-  //       {
-  //         restaurant_id: vivaanId,
-  //         seats: 2,
-  //       },
-  //     ],
-  //   });
+  await prisma.table.createMany({
+    data: [
+      {
+        restaurantId: vivaanId,
+        seats: 4,
+      },
+      {
+        restaurantId: vivaanId,
+        seats: 4,
+      },
+      {
+        restaurantId: vivaanId,
+        seats: 2,
+      },
+      {
+        restaurantId: RamaKrishnaId,
+        seats: 6,
+      },
+      {
+        restaurantId: RamaKrishnaId,
+        seats: 4,
+      },
+      {
+        restaurantId: RamaKrishnaId,
+        seats: 2,
+      },
+      {
+        restaurantId: coconutLagoonId,
+        seats: 6,
+      },
+      {
+        restaurantId: coconutLagoonId,
+        seats: 4,
+      },
+      {
+        restaurantId: coconutLagoonId,
+        seats: 2,
+      },
+      {
+        restaurantId: coconutLagoonId,
+        seats: 4,
+      },
+      {
+        restaurantId: coconutLagoonId,
+        seats: 4,
+      },
+      {
+        restaurantId: lastTrainToDelhiId,
+        seats: 2,
+      },
+      {
+        restaurantId: lastTrainToDelhiId,
+        seats: 6,
+      },
+      {
+        restaurantId: lastTrainToDelhiId,
+        seats: 8,
+      },
+      {
+        restaurantId: adrakYorkvilleId,
+        seats: 4,
+      },
+      {
+        restaurantId: adrakYorkvilleId,
+        seats: 4,
+      },
+      {
+        restaurantId: curryishTavernId,
+        seats: 2,
+      },
+      {
+        restaurantId: curryishTavernId,
+        seats: 4,
+      },
+      {
+        restaurantId: curryishTavernId,
+        seats: 6,
+      },
+      {
+        restaurantId: utsavId,
+        seats: 4,
+      },
+      {
+        restaurantId: utsavId,
+        seats: 6,
+      },
+      {
+        restaurantId: pukkaId,
+        seats: 2,
+      },
+      {
+        restaurantId: pukkaId,
+        seats: 4,
+      },
+      {
+        restaurantId: pukkaId,
+        seats: 6,
+      },
+      {
+        restaurantId: kamasutraIndianId,
+        seats: 4,
+      },
+      {
+        restaurantId: kamasutraIndianId,
+        seats: 4,
+      },
+      {
+        restaurantId: kamasutraIndianId,
+        seats: 4,
+      },
+      {
+        restaurantId: eldoradoTacoId,
+        seats: 2,
+      },
+      {
+        restaurantId: eldoradoTacoId,
+        seats: 4,
+      },
+      {
+        restaurantId: eldoradoTacoId,
+        seats: 6,
+      },
+      {
+        restaurantId: laBartolaId,
+        seats: 4,
+      },
+      {
+        restaurantId: laBartolaId,
+        seats: 6,
+      },
+      {
+        restaurantId: elCatrinId,
+        seats: 6,
+      },
+      {
+        restaurantId: elCatrinId,
+        seats: 6,
+      },
+      {
+        restaurantId: elCatrinId,
+        seats: 6,
+      },
+      {
+        restaurantId: mariachisId,
+        seats: 4,
+      },
+      {
+        restaurantId: mariachisId,
+        seats: 4,
+      },
+      {
+        restaurantId: mariachisId,
+        seats: 4,
+      },
+      {
+        restaurantId: canoRestaurantId,
+        seats: 2,
+      },
+      {
+        restaurantId: canoRestaurantId,
+        seats: 4,
+      },
+      {
+        restaurantId: canoRestaurantId,
+        seats: 4,
+      },
+      {
+        restaurantId: bluRistoranteId,
+        seats: 4,
+      },
+      {
+        restaurantId: bluRistoranteId,
+        seats: 4,
+      },
+      {
+        restaurantId: stelvioId,
+        seats: 6,
+      },
+      {
+        restaurantId: stelvioId,
+        seats: 4,
+      },
+      {
+        restaurantId: stelvioId,
+        seats: 4,
+      },
+      {
+        restaurantId: sofiaId,
+        seats: 6,
+      },
+      {
+        restaurantId: sofiaId,
+        seats: 4,
+      },
+      {
+        restaurantId: sofiaId,
+        seats: 2,
+      },
+    ],
+  })
 
-  res.status(200).json({ name: 'hello' })
+  res.status(200).json({ upload_status: 'success' })
 }
