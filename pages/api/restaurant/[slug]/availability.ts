@@ -73,7 +73,21 @@ export default async function handler(
 
   const tables = restaurant.tables
 
-  return res.json({ searchTimes, bookings, bookingTableObj, tables })
+  const searchTimesWithTables = searchTimes.map((searchTime) => {
+    return {
+      date: new Date(`${day}T${searchTime}`),
+      time: searchTime,
+      tables,
+    }
+  })
+
+  return res.json({
+    searchTimes,
+    bookings,
+    bookingTableObj,
+    tables,
+    searchTimesWithTables,
+  })
 }
 
 // http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?day=2023-08-24&time=14:00:00.000Z&partySize=4
