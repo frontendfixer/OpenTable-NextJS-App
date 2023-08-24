@@ -23,7 +23,7 @@ export default async function handler(
 
   const searchTimes = times.find((t) => {
     return t.time === time
-  })?.searchTimes
+  })?.searchTimes as string[]
 
   if (!searchTimes) {
     return res.status(400).json({
@@ -92,12 +92,25 @@ export default async function handler(
     })
   })
 
+  const availabilities = searchTimesWithTables.map((t) => {
+    const sumOfSeats = t.tables.reduce((sum, table) => {
+      return sum + table.seats
+    }, 0)
+
+    return {
+      time: t.time,
+      seats: sumOfSeats,
+      available: sumOfSeats >= parseInt(partySize),
+    }
+  })
+
   return res.json({
     searchTimes,
     bookings,
     bookingTableObj,
     tables,
     searchTimesWithTables,
+    availabilities,
   })
 }
 
