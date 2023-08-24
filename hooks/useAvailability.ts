@@ -6,7 +6,9 @@ import { useState } from 'react'
 const useAvailability = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<
+    { time: string; seats: number; available: boolean }[] | null
+  >(null)
 
   const fetchAvailability = async ({
     slug,
