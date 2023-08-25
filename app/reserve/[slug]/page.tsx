@@ -1,7 +1,26 @@
+import { Metadata } from 'next'
 import Header from './_components/Header'
 import ReserveForm from './_components/ReserveForm'
 import { PrismaClient } from '@prisma/client'
 import { notFound } from 'next/navigation'
+import generateFormattedTitle from '@/utils/GeneratedFormattedTitle'
+
+type Props = {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+export function generateMetadata({ params, searchParams }: Props): Metadata {
+  return {
+    title: `Reserve: ${generateFormattedTitle(
+      params.slug,
+    )} | Open Table Reservation`,
+    description: `Reserve a table at ${generateFormattedTitle(
+      params.slug,
+    )} on ${String(searchParams.date).split('T')[0]} for ${
+      searchParams.partySize
+    } people`,
+  }
+}
 
 const prisma = new PrismaClient()
 
