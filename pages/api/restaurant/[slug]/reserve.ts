@@ -16,11 +16,21 @@ export default async function handler(
       partySize: string
     }
 
+    const {
+      bookerEmail,
+      bookerPhone,
+      bookerFirstName,
+      bookerLastName,
+      bookerOccasion,
+      bookerRequest,
+    } = req.body
+
     const restaurant = await prisma.restaurant.findUnique({
       where: {
         slug,
       },
       select: {
+        id: true,
         tables: true,
         open_time: true,
         close_time: true,
@@ -106,7 +116,32 @@ export default async function handler(
       }
     }
 
-    return res.json({ tablesCount, tablesToBooks })
+    const booking = await prisma.booking.create({
+      data: {
+        number_of_people: parseInt(partySize),
+        booking_time: new Date(`${day}T${time}`),
+        booker_email: bookerEmail,
+        booker_phone: bookerPhone,
+        booker_first_name: bookerFirstName,
+        booker_last_name: bookerLastName,
+        booker_occasion: bookerOccasion,
+        booker_request: bookerRequest,
+        restaurantId: restaurant.id,
+      },
+    })
+
+    const bookingsOnTablesData = tablesToBooks.map((table_id) => {
+      return {
+        table_id,
+        booking_id: booking.id,
+      }
+    })
+
+    await prisma.bookingOnTable.createMany({
+      data: bookingsOnTablesData,
+    })
+
+    return res.json(booking)
   }
 
   return res.status(401).json({
