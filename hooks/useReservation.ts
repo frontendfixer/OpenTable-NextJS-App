@@ -1,7 +1,7 @@
 'use client'
 
 import axios from 'axios'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 const useReservation = () => {
   const [loading, setLoading] = useState(false)
@@ -18,6 +18,7 @@ const useReservation = () => {
     bookerEmail,
     bookerOccasion,
     bookerRequest,
+    setDidBooked,
   }: {
     slug: string
     partySize: string
@@ -29,6 +30,7 @@ const useReservation = () => {
     bookerEmail: string
     bookerOccasion: string
     bookerRequest: string
+    setDidBooked: Dispatch<SetStateAction<boolean>>
   }) => {
     setLoading(true)
     try {
@@ -51,7 +53,7 @@ const useReservation = () => {
         },
       )
       setLoading(false)
-
+      setDidBooked(true)
       return response.data
     } catch (error: any) {
       setLoading(false)
