@@ -83,6 +83,45 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Booking" (
+    "id" SERIAL NOT NULL,
+    "number_of_people" TEXT NOT NULL,
+    "booking_time" TIMESTAMP(3) NOT NULL,
+    "booker_email" TEXT NOT NULL,
+    "booker_phone" TEXT NOT NULL,
+    "booker_first_name" TEXT NOT NULL,
+    "booker_last_name" TEXT NOT NULL,
+    "booker_occasion" TEXT,
+    "booker_request" TEXT,
+    "restaurantId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Booking_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Table" (
+    "id" SERIAL NOT NULL,
+    "seats" INTEGER NOT NULL,
+    "restaurantId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Table_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BookingOnTable" (
+    "booking_id" INTEGER NOT NULL,
+    "table_id" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BookingOnTable_pkey" PRIMARY KEY ("booking_id","table_id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Restaurant_slug_key" ON "Restaurant"("slug");
 
@@ -103,3 +142,15 @@ ALTER TABLE "Review" ADD CONSTRAINT "Review_restaurant_id_fkey" FOREIGN KEY ("re
 
 -- AddForeignKey
 ALTER TABLE "Review" ADD CONSTRAINT "Review_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Booking" ADD CONSTRAINT "Booking_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "Restaurant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Table" ADD CONSTRAINT "Table_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "Restaurant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BookingOnTable" ADD CONSTRAINT "BookingOnTable_booking_id_fkey" FOREIGN KEY ("booking_id") REFERENCES "Booking"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BookingOnTable" ADD CONSTRAINT "BookingOnTable_table_id_fkey" FOREIGN KEY ("table_id") REFERENCES "Table"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
