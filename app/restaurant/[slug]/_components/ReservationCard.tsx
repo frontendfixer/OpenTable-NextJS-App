@@ -135,9 +135,7 @@ const ReservationCard = ({
                   </p>
                 </Link>
               ) : (
-                <p className="mb-3 mr-3 w-24 rounded bg-gray-300 p-2">
-                  No slot available
-                </p>
+                <p className="mb-3 mr-3 w-24 rounded bg-gray-300 p-2"></p>
               )
             })}
           </div>
