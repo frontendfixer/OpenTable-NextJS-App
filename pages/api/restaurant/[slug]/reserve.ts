@@ -1,3 +1,4 @@
+import { findAvailableTable } from '@/services/restaurant/findAvailableTables'
 import { PrismaClient } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -18,6 +19,11 @@ export default async function handler(
     where: {
       slug,
     },
+    select: {
+      tables: true,
+      open_time: true,
+      close_time: true,
+    },
   })
 
   if (!restaurant) {
@@ -33,7 +39,30 @@ export default async function handler(
     })
   }
 
-  return res.json({ slug, day, time, partySize })
+  const searchTimesWithTables = await findAvailableTable({
+    time,
+    day,
+    res,
+    restaurant,
+  })
+
+  if (!searchTimesWithTables) {
+    return res.status(400).json({
+      errorMessage: 'Invalid data provided',
+    })
+  }
+
+  const searchTimeWithTables = searchTimesWithTables.find((t) => {
+    return t.date.toISOString() === new Date(`${day}T${time}`).toISOString()
+  })
+
+  if (!searchTimeWithTables) {
+    return res.status(400).json({
+      errorMessage: 'No availability, cannot book',
+    })
+  }
+
+  return res.json({ searchTimeWithTables })
 }
 
 // http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2023-08-24&time=14:00:00.000Z&partySize=4
