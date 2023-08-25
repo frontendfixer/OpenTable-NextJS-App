@@ -55,7 +55,7 @@ const Reserve = async ({
     <div className="h-screen border-t">
       <div className="m-auto w-3/5 py-9">
         <Header restaurant={restaurant} searchParams={searchParams} />
-        <ReserveForm />
+        <ReserveForm searchParams={searchParams} slug={params.slug} />
       </div>
     </div>
   )

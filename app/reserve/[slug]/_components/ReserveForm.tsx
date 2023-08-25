@@ -1,8 +1,19 @@
 'use client'
 
+import useReservation from '@/hooks/useReservation'
+import { CircularProgress } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
 
-const ReserveForm = () => {
+const ReserveForm = ({
+  slug,
+  searchParams,
+}: {
+  slug: string
+  searchParams: { date: string; partySize: string }
+}) => {
+  const { date, partySize } = searchParams
+  const [day, time] = date.split('T')
+
   const [inputs, setInputs] = useState({
     bookerFirstName: '',
     bookerLastName: '',
@@ -13,10 +24,27 @@ const ReserveForm = () => {
   })
   const [disabled, setDisabled] = useState(true)
 
+  const { loading, error, createReservation } = useReservation()
+
   const handelChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputs({
       ...inputs,
       [e.target.name]: e.target.value,
+    })
+  }
+
+  const handelClick = async () => {
+    const booking = await createReservation({
+      slug,
+      partySize,
+      day,
+      time,
+      bookerFirstName: inputs.bookerFirstName,
+      bookerLastName: inputs.bookerLastName,
+      bookerPhone: inputs.bookerPhone,
+      bookerEmail: inputs.bookerEmail,
+      bookerOccasion: inputs.bookerOccasion,
+      bookerRequest: inputs.bookerRequest,
     })
   }
 
@@ -84,9 +112,14 @@ const ReserveForm = () => {
       />
       <button
         className="w-full rounded bg-red-600 p-3 font-bold text-white disabled:bg-gray-400"
-        disabled={disabled}
+        disabled={disabled || loading}
+        onClick={handelClick}
       >
-        Complete reservation
+        {loading ? (
+          <CircularProgress color="inherit" />
+        ) : (
+          'Complete reservation'
+        )}
       </button>
       <p className="mt-4 text-sm">
         By clicking “Complete reservation” you agree to the OpenTable Terms of
