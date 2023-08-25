@@ -62,34 +62,50 @@ export default async function handler(
     })
   }
 
-  const tableCount: {
+  const tablesCount: {
     2: number[]
     4: number[]
-    6: number[]
-    8: number[]
   } = {
     2: [],
     4: [],
-    6: [],
-    8: [],
   }
 
   searchTimeWithTables.tables.forEach((table) => {
     if (table.seats === 2) {
-      tableCount[2].push(table.id)
-    }
-    if (table.seats === 4) {
-      tableCount[4].push(table.id)
-    }
-    if (table.seats === 6) {
-      tableCount[6].push(table.id)
-    }
-    if (table.seats === 8) {
-      tableCount[8].push(table.id)
+      tablesCount[2].push(table.id)
+    } else {
+      tablesCount[4].push(table.id)
     }
   })
 
-  return res.json({ searchTimeWithTables, tableCount })
+  const tablesToBooks: number[] = []
+  let seatsRemaining = parseInt(partySize)
+
+  while (seatsRemaining > 0) {
+    if (seatsRemaining >= 3) {
+      if (tablesCount[4].length) {
+        tablesToBooks.push(tablesCount[4][0])
+        tablesCount[4].shift()
+        seatsRemaining = seatsRemaining - 4
+      } else {
+        tablesToBooks.push(tablesCount[2][0])
+        tablesCount[2].shift()
+        seatsRemaining = seatsRemaining - 2
+      }
+    } else {
+      if (tablesCount[2].length) {
+        tablesToBooks.push(tablesCount[2][0])
+        tablesCount[2].shift()
+        seatsRemaining = seatsRemaining - 2
+      } else {
+        tablesToBooks.push(tablesCount[4][0])
+        tablesCount[4].shift()
+        seatsRemaining = seatsRemaining - 4
+      }
+    }
+  }
+
+  return res.json({ tablesCount, tablesToBooks })
 }
 
 // http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2023-08-24&time=14:00:00.000Z&partySize=4
