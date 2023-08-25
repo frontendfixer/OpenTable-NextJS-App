@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { times } from '@/data'
 import { PrismaClient } from '@prisma/client'
+import { findAvailableTable } from '@/services/restaurant/findAvailableTables'
 
 const prisma = new PrismaClient()
 
@@ -21,42 +22,6 @@ export default async function handler(
     })
   }
 
-  const searchTimes = times.find((t) => {
-    return t.time === time
-  })?.searchTimes as string[]
-
-  if (!searchTimes) {
-    return res.status(400).json({
-      errorMessage: 'Invalid data provided in time',
-    })
-  }
-
-  const bookings = await prisma.booking.findMany({
-    where: {
-      booking_time: {
-        gte: new Date(`${day}T${searchTimes[0]}`),
-        lte: new Date(`${day}T${searchTimes[searchTimes.length - 1]}`),
-      },
-    },
-    select: {
-      number_of_people: true,
-      booking_time: true,
-      bookingOnTable: true,
-    },
-  })
-
-  const bookingTableObj: { [key: string]: { [key: number]: true } } = {}
-
-  bookings.forEach((booking) => {
-    bookingTableObj[booking.booking_time.toISOString()] =
-      booking.bookingOnTable.reduce((obj, table) => {
-        return {
-          ...obj,
-          [table.table_id]: true,
-        }
-      }, {})
-  })
-
   const restaurant = await prisma.restaurant.findUnique({
     where: {
       slug: slug,
@@ -73,26 +38,18 @@ export default async function handler(
     })
   }
 
-  const tables = restaurant.tables
-
-  const searchTimesWithTables = searchTimes.map((searchTime) => {
-    return {
-      date: new Date(`${day}T${searchTime}`),
-      time: searchTime,
-      tables,
-    }
+  const searchTimesWithTables = await findAvailableTable({
+    time,
+    day,
+    res,
+    restaurant,
   })
 
-  searchTimesWithTables.forEach((t) => {
-    t.tables = t.tables.filter((table) => {
-      if (bookingTableObj[t.date.toISOString()]) {
-        if (bookingTableObj[t.date.toISOString()][table.id]) {
-          return false
-        }
-      }
-      return true
+  if (!searchTimesWithTables) {
+    return res.status(400).json({
+      errorMessage: 'Invalid data provided in url',
     })
-  })
+  }
 
   const availabilities = searchTimesWithTables
     .map((t) => {
