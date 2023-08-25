@@ -62,7 +62,34 @@ export default async function handler(
     })
   }
 
-  return res.json({ searchTimeWithTables })
+  const tableCount: {
+    2: number[]
+    4: number[]
+    6: number[]
+    8: number[]
+  } = {
+    2: [],
+    4: [],
+    6: [],
+    8: [],
+  }
+
+  searchTimeWithTables.tables.forEach((table) => {
+    if (table.seats === 2) {
+      tableCount[2].push(table.id)
+    }
+    if (table.seats === 4) {
+      tableCount[4].push(table.id)
+    }
+    if (table.seats === 6) {
+      tableCount[6].push(table.id)
+    }
+    if (table.seats === 8) {
+      tableCount[8].push(table.id)
+    }
+  })
+
+  return res.json({ searchTimeWithTables, tableCount })
 }
 
 // http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2023-08-24&time=14:00:00.000Z&partySize=4
