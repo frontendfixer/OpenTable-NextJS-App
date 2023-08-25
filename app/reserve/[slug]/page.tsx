@@ -43,16 +43,18 @@ const fetchRestaurantBySlug = async (slug: string) => {
 
 const Reserve = async ({
   params,
+  searchParams,
 }: {
   params: {
     slug: string
   }
+  searchParams: { date: string; partySize: string }
 }) => {
   const restaurant = await fetchRestaurantBySlug(params.slug)
   return (
     <div className="h-screen border-t">
       <div className="m-auto w-3/5 py-9">
-        <Header restaurant={restaurant} />
+        <Header restaurant={restaurant} searchParams={searchParams} />
         <ReserveForm />
       </div>
     </div>
