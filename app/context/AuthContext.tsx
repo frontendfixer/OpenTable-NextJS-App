@@ -52,11 +52,14 @@ export default function AuthContext({ children }: { children: ReactNode }) {
       if (!jwt) {
         return setAuthState({ data: null, error: null, loading: false })
       }
-      const response = await axios.get('http://localhost:3000/api/auth/me', {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
+      const response = await axios.get(
+        'https://open-table-next-js-app.vercel.app/api/auth/me',
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
         },
-      })
+      )
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
 

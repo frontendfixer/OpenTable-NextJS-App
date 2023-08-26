@@ -24,7 +24,7 @@ const useAvailability = () => {
     setLoading(true)
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/restaurant/${slug}/availability`,
+        `https://open-table-next-js-app.vercel.app/api/restaurant/${slug}/availability`,
         {
           params: {
             day,
